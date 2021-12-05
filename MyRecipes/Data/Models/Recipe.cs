@@ -22,11 +22,11 @@
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
-        [Required]
-        public string ImageUrl { get; set; }
+        //[Required]
+        //public string ImageUrl { get; set; }
 
         public TimeSpan PrepTime { get; set; }
-    
+
         public TimeSpan CookingTime { get; set; }
 
         public int PortionsCount { get; set; }
@@ -35,5 +35,6 @@
 
         public Category Category { get; set; }
 
+        public Image Image { get; set; }
     }
 }

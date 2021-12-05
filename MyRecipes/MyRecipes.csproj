@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Models\" />
     <Folder Include="Views\Recipes\" />
     <Folder Include="wwwroot\Images\" />
   </ItemGroup>

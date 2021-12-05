@@ -60,7 +60,7 @@
                 Title = recipe.Title,
                 Ingredients = recipe.Ingredients,
                 Description = recipe.Description,
-                ImageUrl = recipe.ImageUrl,
+                //ImageUrl = recipe.ImageUrl,
                 PortionsCount = recipe.PortionsCount,
                 PrepTime = TimeSpan.FromMinutes(recipe.PrepTime),
                 CookingTime = TimeSpan.FromMinutes(recipe.CookingTime),
@@ -70,7 +70,9 @@
             var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/Images", Path.GetFileName(image.FileName));
 
             image.CopyTo(new FileStream(fileName, FileMode.Create));
-            ;
+
+            validRecipe.Image = new Image { ImageUrl = Path.GetFullPath(image.FileName) };
+            
             this.data.Recipes.Add(validRecipe);
             this.data.SaveChanges();
 

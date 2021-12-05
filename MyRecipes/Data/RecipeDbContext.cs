@@ -12,6 +12,20 @@
         }
 
         public DbSet<Recipe> Recipes { get; init; }
+
         public DbSet<Category> Categories { get; init; }
+
+        public DbSet<Image> Images { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Image>()
+                .HasOne(i => i.Recipe)
+                .WithOne(r => r.Image)
+                .HasForeignKey<Image>(i => i.RecipeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(builder);
+        }
     }
 }

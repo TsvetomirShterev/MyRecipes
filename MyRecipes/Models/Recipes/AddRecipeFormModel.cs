@@ -22,10 +22,10 @@
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; init; }
 
-        [Required]
-        [Display(Name = "Image URL")]
-        [Url]
-        public string ImageUrl { get; init; }
+        //[Required]
+        //[Display(Name = "Image URL")]
+        //[Url]
+        //public string ImageUrl { get; init; }
 
         [Range(0, 24 * 60)]
         [Display(Name = "Preparation time (in minutes)")]
