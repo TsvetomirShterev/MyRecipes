@@ -4,6 +4,7 @@
     using MyRecipes.Data;
     using MyRecipes.Data.Models;
     using MyRecipes.Models.Recipes;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -47,6 +48,9 @@
                 Ingredients = recipe.Ingredients,
                 Description = recipe.Description,
                 ImageUrl = recipe.ImageUrl,
+                PortionsCount = recipe.PortionsCount,
+                PrepTime = TimeSpan.FromMinutes(recipe.PrepTime),
+                CookingTime = TimeSpan.FromMinutes(recipe.CookingTime),
                 CategoryId = recipe.CategoryId,
             };
 
