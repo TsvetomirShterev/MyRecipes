@@ -1,9 +1,10 @@
 ﻿namespace MyRecipes.Models.Recipes
 {
-    using MyRecipes.Data.Models;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
+    using MyRecipes.Data.Models;
 
     using static Data.DataConstants.RecipeConstants;
 
@@ -21,11 +22,6 @@
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; init; }
-
-        //[Required]
-        //[Display(Name = "Image URL")]
-        //[Url]
-        //public string ImageUrl { get; init; }
 
         [Range(0, 24 * 60)]
         [Display(Name = "Preparation time (in minutes)")]

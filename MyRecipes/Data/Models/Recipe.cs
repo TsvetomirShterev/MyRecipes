@@ -1,7 +1,6 @@
 ﻿namespace MyRecipes.Data.Models
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using static DataConstants.RecipeConstants;
@@ -21,9 +20,6 @@
         [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
-
-        //[Required]
-        //public string ImageUrl { get; set; }
 
         public TimeSpan PrepTime { get; set; }
 

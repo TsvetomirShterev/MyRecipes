@@ -1,8 +1,9 @@
 ﻿namespace MyRecipes.Controllers
 {
+    using System.Diagnostics;
+
     using Microsoft.AspNetCore.Mvc;
     using MyRecipes.Models;
-    using System.Diagnostics;
 
     public class HomeController : Controller
     {
