@@ -15,6 +15,10 @@
         public string Title { get; set; }
 
         [Required]
+        [MaxLength(IngredientsMaxLength)]
+        public string Ingredients { get; set; }
+
+        [Required]
         [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 

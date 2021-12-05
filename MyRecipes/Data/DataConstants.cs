@@ -21,6 +21,9 @@
 
             public const int DescriptionMinLength = 10;
             public const int DescriptionMaxLength = 255;
+
+            public const int IngredientsMinLength = 5;
+            public const int IngredientsMaxLength = 255;
         }
 
         public class UserConstants

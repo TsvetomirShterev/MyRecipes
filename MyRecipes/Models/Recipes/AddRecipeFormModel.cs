@@ -15,6 +15,10 @@
         public string Title { get; init; }
 
         [Required]
+        [StringLength(IngredientsMaxLength, MinimumLength = IngredientsMinLength)]
+        public string Ingredients { get; init; }
+
+        [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; init; }
 

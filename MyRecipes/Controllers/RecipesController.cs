@@ -21,7 +21,7 @@
 
             return View(new AddRecipeFormModel
             {
-                Categories = this.GetRecipeCategroeis(),
+                Categories = this.GetRecipeCategories(),
             });
         }
 
@@ -35,7 +35,7 @@
 
             if (!ModelState.IsValid)
             {
-                recipe.Categories = this.GetRecipeCategroeis();
+                recipe.Categories = this.GetRecipeCategories();
 
                 return View(recipe);
             }
@@ -55,7 +55,7 @@
         }
 
 
-        private IEnumerable<RecipeCategoryViewModel> GetRecipeCategroeis()
+        private IEnumerable<RecipeCategoryViewModel> GetRecipeCategories()
             => this.data
             .Categories
             .Select(c => new RecipeCategoryViewModel
