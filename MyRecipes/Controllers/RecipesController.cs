@@ -28,6 +28,7 @@
         [HttpPost]
         public IActionResult Add(AddRecipeFormModel recipe)
         {
+            ;
             if (!this.data.Categories.Any(c => c.Id == recipe.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(recipe.CategoryId), "This category does not exist.");
@@ -43,6 +44,7 @@
             var validRecipe = new Recipe
             {
                 Title = recipe.Title,
+                Ingredients = recipe.Ingredients,
                 Description = recipe.Description,
                 ImageUrl = recipe.ImageUrl,
                 CategoryId = recipe.CategoryId,
@@ -64,7 +66,5 @@
                 Name = c.Name,
             })
             .ToArray();
-
-
     }
 }
