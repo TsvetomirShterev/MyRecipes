@@ -43,11 +43,6 @@
                 this.ModelState.AddModelError("Image", "The image should not be null and less then 2MB.");
             }
 
-            var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/Images", Path.GetFileName(image.FileName));
-
-            image.CopyTo(new FileStream(fileName, FileMode.Create));
-            ;
-
             if (!this.data.Categories.Any(c => c.Id == recipe.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(recipe.CategoryId), "This category does not exist.");
@@ -59,8 +54,6 @@
 
                 return View(recipe);
             }
-
-          
 
             var validRecipe = new Recipe
             {
@@ -74,6 +67,10 @@
                 CategoryId = recipe.CategoryId,
             };
 
+            var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/Images", Path.GetFileName(image.FileName));
+
+            image.CopyTo(new FileStream(fileName, FileMode.Create));
+            ;
             this.data.Recipes.Add(validRecipe);
             this.data.SaveChanges();
 
