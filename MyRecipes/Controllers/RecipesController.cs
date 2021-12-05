@@ -1,20 +1,28 @@
 ﻿namespace MyRecipes.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using MyRecipes.Data;
     using MyRecipes.Data.Models;
     using MyRecipes.Models.Recipes;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
+    using FileSystem = System.IO.File;
     public class RecipesController : Controller
     {
 
         private readonly RecipeDbContext data;
+        private readonly IWebHostEnvironment hostingEnvironment;
 
-        public RecipesController(RecipeDbContext data)
-            => this.data = data;
+        public RecipesController(RecipeDbContext data, IWebHostEnvironment hostingEnvironment)
+        {
+            this.data = data;
+            this.hostingEnvironment = hostingEnvironment;
+        }
 
         //[Authorize]
         public IActionResult Add()
@@ -27,9 +35,19 @@
         }
 
         [HttpPost]
-        public IActionResult Add(AddRecipeFormModel recipe)
+        public IActionResult Add(AddRecipeFormModel recipe, IFormFile image)
         {
+
+            if (image == null || image.Length > 2 * 1024 * 1024)
+            {
+                this.ModelState.AddModelError("Image", "The image should not be null and less then 2MB.");
+            }
+
+            var fileName = Path.Combine(hostingEnvironment.WebRootPath + "/Images", Path.GetFileName(image.FileName));
+
+            image.CopyTo(new FileStream(fileName, FileMode.Create));
             ;
+
             if (!this.data.Categories.Any(c => c.Id == recipe.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(recipe.CategoryId), "This category does not exist.");
@@ -41,6 +59,8 @@
 
                 return View(recipe);
             }
+
+          
 
             var validRecipe = new Recipe
             {
