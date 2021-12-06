@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyRecipes.Data;
 
 namespace MyRecipes.Data.Migrations
 {
     [DbContext(typeof(RecipeDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211206072430_CategoryChange")]
+    partial class CategoryChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,22 +238,6 @@ namespace MyRecipes.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("MyRecipes.Data.Models.NationalCuisine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Cuisine")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("NationalCuisines");
-                });
-
             modelBuilder.Entity("MyRecipes.Data.Models.Recipe", b =>
                 {
                     b.Property<int>("Id")
@@ -279,9 +265,6 @@ namespace MyRecipes.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("NationalCuisineId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PortionsCount")
                         .HasColumnType("int");
 
@@ -296,8 +279,6 @@ namespace MyRecipes.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("NationalCuisineId");
 
                     b.ToTable("Recipes");
                 });
@@ -361,23 +342,10 @@ namespace MyRecipes.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyRecipes.Data.Models.NationalCuisine", "NationalCuisine")
-                        .WithMany("Recipes")
-                        .HasForeignKey("NationalCuisineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("NationalCuisine");
                 });
 
             modelBuilder.Entity("MyRecipes.Data.Models.Category", b =>
-                {
-                    b.Navigation("Recipes");
-                });
-
-            modelBuilder.Entity("MyRecipes.Data.Models.NationalCuisine", b =>
                 {
                     b.Navigation("Recipes");
                 });

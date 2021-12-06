@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Recipes\" />
     <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 

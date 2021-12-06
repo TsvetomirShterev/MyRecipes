@@ -14,5 +14,6 @@
         public DbSet<Recipe> Recipes { get; init; }
 
         public DbSet<Category> Categories { get; init; }
+
     }
 }

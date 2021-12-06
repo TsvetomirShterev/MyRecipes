@@ -5,8 +5,6 @@
     using System.IO;
     using System.Linq;
 
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using MyRecipes.Data;
     using MyRecipes.Data.Models;
@@ -18,10 +16,8 @@
 
         private readonly RecipeDbContext data;
 
-        public RecipesController(RecipeDbContext data)
-        {
-            this.data = data;
-        }
+        public RecipesController(RecipeDbContext data) 
+            => this.data = data;
 
         //[Authorize]
         public IActionResult Add()
@@ -48,11 +44,12 @@
                 return View(recipe);
             }
 
+
             var validRecipe = new Recipe
             {
                 Title = recipe.Title,
                 Ingredients = recipe.Ingredients,
-                Description = recipe.Description,
+                Instructions = recipe.Instructions,
                 ImageUrl = recipe.ImageUrl,
                 PortionsCount = recipe.PortionsCount,
                 PrepTime = TimeSpan.FromMinutes(recipe.PrepTime),
@@ -60,14 +57,31 @@
                 CategoryId = recipe.CategoryId,
             };
 
-           
-            
             this.data.Recipes.Add(validRecipe);
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(All));
         }
 
+        public IActionResult All()
+        {
+            var cars = this.data
+                .Recipes
+                .OrderByDescending(r => r.Id)
+                .Select(r => new RecipeListingViewModel
+                {
+                    Id = r.Id,
+                    Title = r.Title,
+                    ImageUrl = r.ImageUrl,
+                    PrepTime = r.PrepTime,
+                    CookingTime = r.CookingTime,
+                    PortionsCount = r.PortionsCount,
+                    Category = r.Category.Name,
+                })
+                .ToList();
+
+            return View(cars);
+        }
 
         private IEnumerable<RecipeCategoryViewModel> GetRecipeCategories()
             => this.data

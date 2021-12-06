@@ -18,8 +18,8 @@
         public string Ingredients { get; set; }
 
         [Required]
-        [MaxLength(DescriptionMaxLength)]
-        public string Description { get; set; }
+        [MaxLength(InstructionMaxLength)]
+        public string Instructions { get; set; }
 
         [Required]
         public string ImageUrl { get; set; }
@@ -33,5 +33,6 @@
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }
+
     }
 }

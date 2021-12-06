@@ -20,7 +20,7 @@
             MigrateDatabase(services);
 
             SeedCategories(services);
-
+            
             return app;
         }
 
@@ -35,14 +35,13 @@
         {
             var data = services.GetRequiredService<RecipeDbContext>();
 
-
             if (data.Categories.Any())
             {
                 return;
             }
 
             data.Categories.AddRange(new[]
-            {
+           {
                 new Category {Name = "Breakfast "},
                 new Category {Name = "Lunch"},
                 new Category {Name = "Dinner"},

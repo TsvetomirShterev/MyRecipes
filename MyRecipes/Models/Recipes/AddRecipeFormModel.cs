@@ -7,7 +7,6 @@
     using MyRecipes.Data.Models;
 
     using static Data.DataConstants.RecipeConstants;
-
     public class AddRecipeFormModel
     {
 
@@ -20,8 +19,8 @@
         public string Ingredients { get; init; }
 
         [Required]
-        [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
-        public string Description { get; init; }
+        [StringLength(InstructionMaxLength, MinimumLength = INstructionsMinLength)]
+        public string Instructions { get; init; }
 
         [Required]
         public string ImageUrl { get; set; }
@@ -40,6 +39,8 @@
         [Display(Name = nameof(Category))]
         public int CategoryId { get; init; }
 
+    
         public IEnumerable<RecipeCategoryViewModel> Categories { get; set; }
+
     }
 }
