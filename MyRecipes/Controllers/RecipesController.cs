@@ -2,12 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-
+    
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyRecipes.Data;
     using MyRecipes.Data.Models;
+    using MyRecipes.Infrastrucutre.Extentions;
     using MyRecipes.Models.Recipes;
 
     using FileSystem = System.IO.File;
@@ -19,9 +20,19 @@
         public RecipesController(RecipeDbContext data)
             => this.data = data;
 
-        //[Authorize]
+        [Authorize]
         public IActionResult Add()
         {
+            var chefId = this.data
+               .Chefs
+               .Where(c => c.UserId == this.User.GetId())
+               .Select(c => c.Id)
+               .FirstOrDefault();
+
+            if (chefId == 0)
+            {
+                return RedirectToAction(nameof(ChefsController.Become), "Chefs");
+            }
 
             return View(new AddRecipeFormModel
             {
@@ -30,8 +41,20 @@
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddRecipeFormModel recipe)
         {
+            var chefId = this.data
+                .Chefs
+                .Where(c => c.UserId == this.User.GetId())
+                .Select(c => c.Id)
+                .FirstOrDefault();
+
+            if (chefId == 0)
+            {
+                return RedirectToAction("Become", "Chefs");
+            }
+
             if (!this.data.Categories.Any(c => c.Id == recipe.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(recipe.CategoryId), "This category does not exist.");
@@ -55,6 +78,7 @@
                 PrepTime = TimeSpan.FromMinutes(recipe.PrepTime),
                 CookingTime = TimeSpan.FromMinutes(recipe.CookingTime),
                 CategoryId = recipe.CategoryId,
+                ChefId = chefId,
             };
 
             this.data.Recipes.Add(validRecipe);
@@ -84,7 +108,7 @@
 
             var recipes = recipesQuery
                 .OrderByDescending(r => r.Id)
-                .Skip((query.CurrentPage -1) * AllRecipesViewModel.RecipesPerPage)
+                .Skip((query.CurrentPage - 1) * AllRecipesViewModel.RecipesPerPage)
                 .Take(AllRecipesViewModel.RecipesPerPage)
                 .Select(r => new RecipeListingViewModel
                 {
@@ -110,6 +134,11 @@
 
             return View(query);
         }
+
+        private bool UserIsChef()
+            => this.data
+                .Chefs
+                .Any(c => c.UserId == this.User.GetId());
 
         private IEnumerable<RecipeCategoryViewModel> GetRecipeCategories()
             => this.data

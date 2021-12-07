@@ -28,6 +28,11 @@
     </div>
 </form>
 
+@if (!Model.Recipes.Any())
+{
+    <h2 class="text-center">No recipes by the given criteria</h2>
+}
+
 <div class="row">
     @foreach (var recipe in Model.Recipes)
     {

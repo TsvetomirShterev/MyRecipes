@@ -14,10 +14,9 @@
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
+
         [Required]
         public string UserId { get; set; }
-
-        public IdentityUser User { get; set; }
 
         public IEnumerable<Recipe> Recipes { get; init; } = new List<Recipe>();
     }
