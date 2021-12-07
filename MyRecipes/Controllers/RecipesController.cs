@@ -16,7 +16,7 @@
 
         private readonly RecipeDbContext data;
 
-        public RecipesController(RecipeDbContext data) 
+        public RecipesController(RecipeDbContext data)
             => this.data = data;
 
         //[Authorize]
@@ -63,11 +63,29 @@
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult All()
+        public IActionResult All([FromQuery] AllRecipesViewModel query)
         {
-            var cars = this.data
-                .Recipes
+            var recipesQuery = this.data.Recipes.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Category))
+            {
+                recipesQuery = recipesQuery.Where(r => r.Category.Name == query.Category);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                recipesQuery = recipesQuery
+                    .Where(r => r.Title.ToLower().Contains(query.SearchTerm.ToLower())
+                    || r.Category.Name.ToLower().Contains(query.SearchTerm.ToLower())
+                    || r.Instructions.ToLower().Contains(query.SearchTerm.ToLower()));
+            }
+
+            var totalRecipes = recipesQuery.Count();
+
+            var recipes = recipesQuery
                 .OrderByDescending(r => r.Id)
+                .Skip((query.CurrentPage -1) * AllRecipesViewModel.RecipesPerPage)
+                .Take(AllRecipesViewModel.RecipesPerPage)
                 .Select(r => new RecipeListingViewModel
                 {
                     Id = r.Id,
@@ -80,7 +98,17 @@
                 })
                 .ToList();
 
-            return View(cars);
+            var recipeCategories = this.data
+                .Recipes
+                .Select(r => r.Category.Name)
+                .Distinct()
+                .ToArray();
+
+            query.Categories = recipeCategories;
+            query.Recipes = recipes;
+            query.TotalRecipes = totalRecipes;
+
+            return View(query);
         }
 
         private IEnumerable<RecipeCategoryViewModel> GetRecipeCategories()

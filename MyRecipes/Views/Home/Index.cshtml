@@ -18,6 +18,8 @@
 }
 else
 {
+    <h1>Last three added recipes:</h1>
+    <br>
     <div class="row">
         @foreach (var recipe in Model.Recipes)
         {
@@ -33,5 +35,16 @@ else
         }
     </div>
 }
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <h2>@Model.TotalRecipes Recipes</h2>
+        </div>
+        <div class="col-md-6 text-center">
+            <h2>@Model.TotalUsers Users</h2>
+        </div>
+    </div>
+</div>
 
 
