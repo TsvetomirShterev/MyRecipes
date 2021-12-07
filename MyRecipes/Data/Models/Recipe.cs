@@ -34,5 +34,8 @@
 
         public Category Category { get; set; }
 
+        public int ChefId { get; init; }
+
+        public Chef Chef { get; init; }
     }
 }

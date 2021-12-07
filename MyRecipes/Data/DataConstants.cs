@@ -32,8 +32,8 @@
 
         public class ChefConstants
         {
-            public const int ChefNameMinLength = 8;
-            public const int ChefNameMaxLength = 30;
+            public const int NameMinLength = 8;
+            public const int NameMaxLength = 30;
         }
     }
 }
