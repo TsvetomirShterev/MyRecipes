@@ -1,13 +1,7 @@
 ﻿namespace MyRecipes.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using MyRecipes.Data;
-    using MyRecipes.Data.Models;
     using MyRecipes.Infrastrucutre.Extentions;
     using MyRecipes.Models.Recipes;
     using MyRecipes.Services.Chefs;
@@ -82,14 +76,14 @@
         {
             var userId = this.User.GetId();
 
-            if (!this.chefs.UserIsChef(userId))
+            if (!this.chefs.UserIsChef(userId) && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(ChefsController.Become), "Chefs");
             }
 
             var recipe = this.recipes.Details(id);
 
-            if (recipe.UserId != userId)
+            if (recipe.UserId != userId && !User.IsAdmin())
             {
                 return BadRequest();
             }
@@ -114,7 +108,7 @@
         {
             var chefId = this.chefs.GetIdByUser(this.User.GetId());
 
-            if (chefId == 0)
+            if (chefId == 0 && !User.IsAdmin())
             {
                 return RedirectToAction("Become", "Chefs");
             }
@@ -131,7 +125,7 @@
                 return View(recipe);
             }
 
-            if (!this.recipes.IsByChef(id, chefId))
+            if (!this.recipes.IsByChef(id, chefId) && !User.IsAdmin())
             {
                 return BadRequest();
             }

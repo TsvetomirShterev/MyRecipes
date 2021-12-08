@@ -1,4 +1,7 @@
-﻿@model IEnumerable<RecipeServiceModel>
+﻿@using MyRecipes.Areas.Admin
+
+
+@model IEnumerable<RecipeServiceModel>
 
 
 <div class="row">
@@ -11,9 +14,10 @@
                     <h5 class="card-title">@recipe.Title</h5>
                     <h6 class="card-title">Category: @recipe.CategoryName</h6>
                     <a asp-controller="Recipes" asp-action="Details" asp-route-id="@recipe.Id" class="btn btn-primary">View recipe</a>
-                    @if (ViewBag.AllowRecipeEdit == true)
+                    @if (ViewBag.AllowRecipeEdit == true || User.IsAdmin())
                     {
-                        <span>Edit</span>
+                        <a asp-controller="Recipes" asp-action="Edit" asp-route-id="@recipe.Id" class="btn btn-warning">Edit</a>
+                        <a asp-controller="Recipes" asp-action="Delete" asp-route-id="@recipe.Id" class="btn btn-danger">Delete</a>
                     }
                 </div>
             </div>

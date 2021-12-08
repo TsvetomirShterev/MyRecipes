@@ -5,7 +5,7 @@
     using Microsoft.EntityFrameworkCore;
     using MyRecipes.Data.Models;
 
-    public class RecipeDbContext : IdentityDbContext
+    public class RecipeDbContext : IdentityDbContext<User>
     {
         public RecipeDbContext(DbContextOptions<RecipeDbContext> options)
             : base(options)
@@ -22,9 +22,10 @@
         {
             builder
                 .Entity<Chef>()
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
-                .HasForeignKey<Chef>(c => c.UserId);
+                .HasForeignKey<Chef>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }

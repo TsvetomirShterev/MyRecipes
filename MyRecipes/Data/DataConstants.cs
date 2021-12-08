@@ -27,6 +27,7 @@
 
         public class UserConstants
         {
+            public const int FullNameMinLength = 5;
             public const int FullNameMaxLength = 50;
         }
 

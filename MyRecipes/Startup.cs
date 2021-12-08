@@ -12,6 +12,7 @@ namespace MyRecipes
     using MyRecipes.Services.Statistics;
     using MyRecipes.Services.Recipes;
     using MyRecipes.Services.Chefs;
+    using MyRecipes.Data.Models;
 
     public class Startup
     {
@@ -26,13 +27,15 @@ namespace MyRecipes
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            IdentityBuilder identityBuilder = services.AddDefaultIdentity<IdentityUser>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-            })
+            IdentityBuilder identityBuilder = services
+                .AddDefaultIdentity<User>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<RecipeDbContext>();
             services.AddControllersWithViews();
 
