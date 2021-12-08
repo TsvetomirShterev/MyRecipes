@@ -1,11 +1,14 @@
 ﻿namespace MyRecipes.Services.Recipes
 {
-    using MyRecipes.Models.Recipes;
     using System.Collections.Generic;
 
     public interface IRecipeService
     {
-        //IEnumerable<RecipeCategoryViewModel> GetRecipeCategroeis();
+        RecipeQueryServiceModel All(string category,
+            string searchTerm,
+            int currentPage,
+            int recipesPerPage);
 
+        IEnumerable<string> AllRecipeCategories();
     }
 }

@@ -9,6 +9,8 @@ namespace MyRecipes
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using MyRecipes.Infrastrucutre.Extentions;
+    using MyRecipes.Services.Statistics;
+    using MyRecipes.Services.Recipes;
 
     public class Startup
     {
@@ -32,6 +34,9 @@ namespace MyRecipes
             })
                 .AddEntityFrameworkStores<RecipeDbContext>();
             services.AddControllersWithViews();
+
+            services.AddTransient<IStatisticsService, StatisticsService>();
+            services.AddTransient<IRecipeService, RecipeService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -38,13 +38,26 @@ else
 
 <div class="jumbotron jumbotron-fluid">
     <div class="row">
-        <div class="col-md-6 text-center">
-            <h2>@Model.TotalRecipes Recipes</h2>
+        <div class="col-md-4 text-center">
+            <h2 id="total-recipes"></h2>
         </div>
-        <div class="col-md-6 text-center">
-            <h2>@Model.TotalUsers Users</h2>
+        <div class="col-md-4 text-center">
+            <h2 id="total-chefs"></h2>
+        </div>
+        <div class="col-md-4 text-center">
+            <h2 id="total-users"></h2>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $.get('api/statistics', (data) => {
+            $('#total-recipes').text(data.totalRecipes + " " + "Recipes");
+            $('#total-chefs').text(data.totalChefs + " " + "Chefs");
+            $('#total-users').text(data.totalUsers + " " + "Users");
+        });
+    </script>>
+}
 
 

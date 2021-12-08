@@ -1,5 +1,6 @@
 ﻿namespace MyRecipes.Models.Recipes
 {
+    using MyRecipes.Services.Recipes;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -7,7 +8,7 @@
     {
         public const int RecipesPerPage = 6;
 
-        public IEnumerable<RecipeListingViewModel> Recipes { get; set; }
+        public IEnumerable<RecipeServiceModel> Recipes { get; set; }
 
         public string Category { get; init; }
 

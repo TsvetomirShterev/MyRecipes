@@ -4,6 +4,8 @@
 
     public class IndexViewModel
     {
+        public int TotalChefs { get; init; }
+
         public int TotalUsers { get; init; }
 
         public int TotalRecipes { get; init; }

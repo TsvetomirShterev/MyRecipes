@@ -3,22 +3,27 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyRecipes.Data;
     using MyRecipes.Data.Models;
     using MyRecipes.Infrastrucutre.Extentions;
     using MyRecipes.Models.Recipes;
+    using MyRecipes.Services.Recipes;
 
-    using FileSystem = System.IO.File;
+
     public class RecipesController : Controller
     {
 
         private readonly RecipeDbContext data;
+        private readonly IRecipeService recipes;
 
-        public RecipesController(RecipeDbContext data)
-            => this.data = data;
+        public RecipesController(RecipeDbContext data, IRecipeService recipes)
+        {
+            this.data = data;
+            this.recipes = recipes;
+        }
 
         [Authorize]
         public IActionResult Add()
@@ -89,48 +94,17 @@
 
         public IActionResult All([FromQuery] AllRecipesViewModel query)
         {
-            var recipesQuery = this.data.Recipes.AsQueryable();
+            var recipes = this.recipes.All(
+                query.Category,
+                query.SearchTerm,
+                query.CurrentPage,
+                AllRecipesViewModel.RecipesPerPage);
 
-            if (!string.IsNullOrWhiteSpace(query.Category))
-            {
-                recipesQuery = recipesQuery.Where(r => r.Category.Name == query.Category);
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-            {
-                recipesQuery = recipesQuery
-                    .Where(r => r.Title.ToLower().Contains(query.SearchTerm.ToLower())
-                    || r.Category.Name.ToLower().Contains(query.SearchTerm.ToLower())
-                    || r.Instructions.ToLower().Contains(query.SearchTerm.ToLower()));
-            }
-
-            var totalRecipes = recipesQuery.Count();
-
-            var recipes = recipesQuery
-                .OrderByDescending(r => r.Id)
-                .Skip((query.CurrentPage - 1) * AllRecipesViewModel.RecipesPerPage)
-                .Take(AllRecipesViewModel.RecipesPerPage)
-                .Select(r => new RecipeListingViewModel
-                {
-                    Id = r.Id,
-                    Title = r.Title,
-                    ImageUrl = r.ImageUrl,
-                    PrepTime = r.PrepTime,
-                    CookingTime = r.CookingTime,
-                    PortionsCount = r.PortionsCount,
-                    Category = r.Category.Name,
-                })
-                .ToList();
-
-            var recipeCategories = this.data
-                .Recipes
-                .Select(r => r.Category.Name)
-                .Distinct()
-                .ToArray();
+            var recipeCategories = this.recipes.AllRecipeCategories();
 
             query.Categories = recipeCategories;
-            query.Recipes = recipes;
-            query.TotalRecipes = totalRecipes;
+            query.TotalRecipes = recipes.TotalRecipes;
+            query.Recipes = recipes.Recipes;
 
             return View(query);
         }

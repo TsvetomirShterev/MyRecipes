@@ -6,17 +6,21 @@
     using MyRecipes.Data;
     using MyRecipes.Models;
     using MyRecipes.Models.Home;
+    using MyRecipes.Services.Statistics;
 
     public class HomeController : Controller
     {
         private readonly RecipeDbContext data;
+        private readonly IStatisticsService statistics;
 
-        public HomeController(RecipeDbContext data)
-            => this.data = data;
+        public HomeController(RecipeDbContext data, IStatisticsService statistics)
+        {
+            this.data = data;
+            this.statistics = statistics;
+        }
 
         public IActionResult Index()
         {
-            var totalRecipes = this.data.Recipes.Count();
 
             var recipes = this.data
                .Recipes
@@ -33,9 +37,13 @@
                .Take(3)
                .ToList();
 
+            var statistics = this.statistics.GetStatistics();
+
             return View(new IndexViewModel
             {
-                TotalRecipes = totalRecipes,
+                TotalRecipes = statistics.TotalRecipes,
+                TotalChefs = statistics.TotalChefs,
+                TotalUsers = statistics.TotalUsers,
                 Recipes = recipes,
             });
         }
