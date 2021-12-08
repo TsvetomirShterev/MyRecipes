@@ -7,7 +7,7 @@
     using MyRecipes.Data.Models;
 
     using static Data.DataConstants.RecipeConstants;
-    public class AddRecipeFormModel
+    public class RecipeFormModel
     {
 
         [Required]

@@ -1,0 +1,24 @@
+﻿@model IEnumerable<RecipeServiceModel>
+
+
+<div class="row">
+    @foreach (var recipe in Model.OrderByDescending(r => r.Id))
+    {
+        <div class="col mb-4">
+            <div class="card" style="width: 20rem;">
+                <img class="card-img-top" src="@recipe.ImageUrl" alt="@recipe.Title">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@recipe.Title</h5>
+                    <h6 class="card-title">Category: @recipe.CategoryName</h6>
+                    <a asp-controller="Recipes" asp-action="Details" asp-route-id="@recipe.Id" class="btn btn-primary">View recipe</a>
+                    @if (ViewBag.AllowRecipeEdit == true)
+                    {
+                        <span>Edit</span>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+

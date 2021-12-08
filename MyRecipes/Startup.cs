@@ -11,6 +11,7 @@ namespace MyRecipes
     using MyRecipes.Infrastrucutre.Extentions;
     using MyRecipes.Services.Statistics;
     using MyRecipes.Services.Recipes;
+    using MyRecipes.Services.Chefs;
 
     public class Startup
     {
@@ -37,6 +38,7 @@ namespace MyRecipes
 
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<IRecipeService, RecipeService>();
+            services.AddTransient<IChefService, ChefService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

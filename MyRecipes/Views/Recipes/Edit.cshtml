@@ -1,11 +1,12 @@
 ﻿@model RecipeFormModel
 
+@{
+    ViewBag.Title = "Edit Recipe";
 
-@{ 
-    ViewBag.Title = "Add Recipe";
 }
 
-<partial name="_RecipeFormPartial" model="@Model"/>
+<partial name="_RecipeFormPartial" model="@Model" />
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
