@@ -10,6 +10,6 @@
 
         public int TotalRecipes { get; init; }
 
-        public IEnumerable<RecipeIndexViewModel> Recipes { get; init; }
+        public IEnumerable<RecipeIndexViewModel> Recipes { get; set; }
     }
 }

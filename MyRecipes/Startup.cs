@@ -39,6 +39,8 @@ namespace MyRecipes
                 .AddEntityFrameworkStores<RecipeDbContext>();
             services.AddControllersWithViews();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<IRecipeService, RecipeService>();
             services.AddTransient<IChefService, ChefService>();
@@ -66,10 +68,7 @@ namespace MyRecipes
             .UseAuthorization()
             .UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "Areas",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
+                endpoints.MapDefaultAreaRoute();
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });

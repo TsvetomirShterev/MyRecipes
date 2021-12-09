@@ -1,5 +1,6 @@
 ﻿namespace MyRecipes.Controllers
 {
+    using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyRecipes.Infrastrucutre.Extentions;
@@ -13,11 +14,13 @@
 
         private readonly IRecipeService recipes;
         private readonly IChefService chefs;
+        private readonly IMapper mapper;
 
-        public RecipesController(IRecipeService recipes, IChefService chefs)
+        public RecipesController(IRecipeService recipes, IChefService chefs, IMapper mapper)
         {
             this.recipes = recipes;
             this.chefs = chefs;
+            this.mapper = mapper;
         }
 
         [Authorize]
@@ -85,21 +88,16 @@
 
             if (recipe.UserId != userId && !User.IsAdmin())
             {
-                return BadRequest();
+                return Unauthorized();
             }
 
-            return View(new RecipeFormModel
-            {
-                Title = recipe.Title,
-                ImageUrl = recipe.ImageUrl,
-                Instructions = recipe.Instructions,
-                Ingredients = recipe.Ingredients,
-                PrepTime = (int)recipe.PrepTime.TotalMinutes,
-                CookingTime = (int)recipe.CookingTime.TotalMinutes,
-                PortionsCount = recipe.PortionsCount,
-                CategoryId = recipe.CategoryId,
-                Categories = this.recipes.GetRecipeCategories(),
-            });
+            var recipeForm = this.mapper.Map<RecipeFormModel>(recipe);
+
+            recipeForm.PrepTime = (int)recipe.PrepTime.TotalMinutes;
+            recipeForm.CookingTime = (int)recipe.CookingTime.TotalMinutes;
+            recipeForm.Categories = this.recipes.GetRecipeCategories();
+
+            return View(recipeForm);
         }
 
         [Authorize]

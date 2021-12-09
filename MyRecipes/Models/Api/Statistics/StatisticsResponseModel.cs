@@ -7,5 +7,6 @@
         public int TotalUsers { get; init; }
 
         public int TotalRecipes { get; init; }
+
     }
 }

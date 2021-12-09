@@ -2,6 +2,8 @@
 {
     using System.Diagnostics;
     using System.Linq;
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using Microsoft.AspNetCore.Mvc;
     using MyRecipes.Data;
     using MyRecipes.Models;
@@ -12,11 +14,13 @@
     {
         private readonly RecipeDbContext data;
         private readonly IStatisticsService statistics;
+        private readonly IMapper mapper;
 
-        public HomeController(RecipeDbContext data, IStatisticsService statistics)
+        public HomeController(RecipeDbContext data, IStatisticsService statistics, IMapper mapper)
         {
             this.data = data;
             this.statistics = statistics;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
@@ -25,27 +29,17 @@
             var recipes = this.data
                .Recipes
                .OrderByDescending(r => r.Id)
-               .Select(r => new RecipeIndexViewModel
-               {
-                   Id = r.Id,
-                   Title = r.Title,
-                   ImageUrl = r.ImageUrl,
-                   PrepTime = r.PrepTime,
-                   CookingTime = r.CookingTime,
-                   PortionsCount = r.PortionsCount,
-               })
+               .ProjectTo<RecipeIndexViewModel>(this.mapper.ConfigurationProvider)
                .Take(3)
                .ToList();
 
             var statistics = this.statistics.GetStatistics();
 
-            return View(new IndexViewModel
-            {
-                TotalRecipes = statistics.TotalRecipes,
-                TotalChefs = statistics.TotalChefs,
-                TotalUsers = statistics.TotalUsers,
-                Recipes = recipes,
-            });
+            var recipeViewModel = this.mapper.Map<IndexViewModel>(statistics);
+
+            recipeViewModel.Recipes = recipes;
+
+            return View(recipeViewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

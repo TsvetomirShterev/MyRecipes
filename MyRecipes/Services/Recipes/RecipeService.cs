@@ -3,7 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using MyRecipes.Data;
     using MyRecipes.Data.Models;
     using MyRecipes.Models.Recipes;
@@ -11,10 +12,12 @@
     public class RecipeService : IRecipeService
     {
         private readonly RecipeDbContext data;
+        private readonly IMapper mapper;
 
-        public RecipeService(RecipeDbContext data)
+        public RecipeService(RecipeDbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper;
         }
 
         public RecipeQueryServiceModel All(
@@ -63,8 +66,8 @@
                  .ToArray();
 
         public IEnumerable<RecipeServiceModel> ByUser(string userId)
-            => this.GetRecipes(this.data
-                .Recipes
+            => this
+            .GetRecipes(this.data.Recipes
                 .Where(c => c.Chef.UserId == userId));
 
 
@@ -72,21 +75,7 @@
         => this.data
             .Recipes
             .Where(r => r.Id == id)
-            .Select(r => new RecipesInstructionsServiceModel
-            {
-                Id = r.Id,
-                Title = r.Title,
-                ImageUrl = r.ImageUrl,
-                PrepTime = r.PrepTime,
-                CookingTime = r.CookingTime,
-                PortionsCount = r.PortionsCount,
-                CategoryName = r.Category.Name,
-                Instructions = r.Instructions,
-                Ingredients = r.Ingredients,
-                ChefId = r.ChefId,
-                ChefName = r.Chef.Name,
-                UserId = r.Chef.UserId,
-            })
+            .ProjectTo<RecipesInstructionsServiceModel>((this.mapper.ConfigurationProvider))
             .FirstOrDefault();
 
         public bool CategoryExists(int categoryId)
@@ -154,7 +143,8 @@
       .ToArray();
 
         private IEnumerable<RecipeServiceModel> GetRecipes(IQueryable<Recipe> recipeQuery)
-          => recipeQuery.Select(r => new RecipeServiceModel
+          => recipeQuery
+            .Select(r => new RecipeServiceModel
           {
               Id = r.Id,
               Title = r.Title,
