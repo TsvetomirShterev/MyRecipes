@@ -1,16 +1,24 @@
 ﻿namespace MyRecipes.Services.Statistics
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using MyRecipes.Data;
     using MyRecipes.Models.Api.Statistics;
+    using MyRecipes.Models.Home;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     public class StatisticsService : IStatisticsService
     {
         private readonly RecipeDbContext data;
+        private readonly IMapper mapper;
 
-        public StatisticsService(RecipeDbContext data)
-            => this.data = data;
+        public StatisticsService(RecipeDbContext data, IMapper mapper = null)
+        {
+            this.data = data;
+            this.mapper = mapper;
+        }
 
         public StatisticsResponseModel GetStatistics()
         {
@@ -25,5 +33,13 @@
                 TotalUsers = totalUsers,
             };
         }
+
+        public IEnumerable<RecipeIndexViewModel> Latest()
+         => this.data
+              .Recipes
+              .OrderByDescending(r => r.Id)
+              .ProjectTo<RecipeIndexViewModel>(this.mapper.ConfigurationProvider)
+              .Take(3)
+              .ToList();
     }
 }

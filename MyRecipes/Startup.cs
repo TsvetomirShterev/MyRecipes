@@ -13,6 +13,7 @@ namespace MyRecipes
     using MyRecipes.Services.Recipes;
     using MyRecipes.Services.Chefs;
     using MyRecipes.Data.Models;
+    using Microsoft.AspNetCore.Mvc;
 
     public class Startup
     {
@@ -40,6 +41,13 @@ namespace MyRecipes
             services.AddControllersWithViews();
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddMemoryCache();
+
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
 
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<IRecipeService, RecipeService>();

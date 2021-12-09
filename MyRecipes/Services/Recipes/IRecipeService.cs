@@ -1,7 +1,8 @@
 ﻿namespace MyRecipes.Services.Recipes
 {
-    using MyRecipes.Models.Recipes;
     using System.Collections.Generic;
+
+    using MyRecipes.Models.Recipes;
 
     public interface IRecipeService
     {
@@ -45,6 +46,6 @@
 
         bool CategoryExists(int categoryId);
 
-      
+        
     }
 }

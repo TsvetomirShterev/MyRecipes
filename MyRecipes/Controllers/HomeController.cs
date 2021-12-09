@@ -1,49 +1,52 @@
 ﻿namespace MyRecipes.Controllers
 {
-    using System.Diagnostics;
-    using System.Linq;
     using AutoMapper;
-    using AutoMapper.QueryableExtensions;
     using Microsoft.AspNetCore.Mvc;
-    using MyRecipes.Data;
-    using MyRecipes.Models;
+    using Microsoft.Extensions.Caching.Memory;
     using MyRecipes.Models.Home;
     using MyRecipes.Services.Statistics;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class HomeController : Controller
     {
-        private readonly RecipeDbContext data;
         private readonly IStatisticsService statistics;
         private readonly IMapper mapper;
+        private readonly IMemoryCache cache;
 
-        public HomeController(RecipeDbContext data, IStatisticsService statistics, IMapper mapper)
+        public HomeController(IStatisticsService statistics, IMapper mapper, IMemoryCache cache)
         {
-            this.data = data;
             this.statistics = statistics;
             this.mapper = mapper;
+            this.cache = cache;
         }
 
         public IActionResult Index()
         {
+            const string latestRecipesCacheKey = "LatestRecipesCacheKey";
 
-            var recipes = this.data
-               .Recipes
-               .OrderByDescending(r => r.Id)
-               .ProjectTo<RecipeIndexViewModel>(this.mapper.ConfigurationProvider)
-               .Take(3)
-               .ToList();
+            var latestRecipes = this.cache.Get<List<RecipeIndexViewModel>>(latestRecipesCacheKey);
+
+            if (latestRecipes == null)
+            {
+                latestRecipes = this.statistics.Latest().ToList();
+
+                var cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
+
+                this.cache.Set(latestRecipesCacheKey, latestRecipes, cacheOptions);
+            }
+
 
             var statistics = this.statistics.GetStatistics();
 
             var recipeViewModel = this.mapper.Map<IndexViewModel>(statistics);
 
-            recipeViewModel.Recipes = recipes;
+            recipeViewModel.Recipes = latestRecipes;
 
             return View(recipeViewModel);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-            => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public IActionResult Error() => View();
     }
 }
