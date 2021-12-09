@@ -1,7 +1,8 @@
 ﻿namespace MyRecipes.Data.Models
 {
-    using Microsoft.AspNetCore.Identity;
     using System.ComponentModel.DataAnnotations;
+
+    using Microsoft.AspNetCore.Identity;
 
     using static DataConstants.UserConstants;
     public class User : IdentityUser

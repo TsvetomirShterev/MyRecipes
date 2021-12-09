@@ -1,7 +1,8 @@
 ﻿namespace MyRecipes.Infrastrucutre.Extentions
 {
-    using MyRecipes.Areas.Admin;
     using System.Security.Claims;
+
+    using MyRecipes.Areas.Admin;
 
     public static class ClaimsPrincipleExtentions
     {

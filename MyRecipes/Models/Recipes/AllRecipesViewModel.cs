@@ -1,8 +1,9 @@
 ﻿namespace MyRecipes.Models.Recipes
 {
-    using MyRecipes.Services.Recipes;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
+    using MyRecipes.Services.Recipes;
 
     public class AllRecipesViewModel
     {

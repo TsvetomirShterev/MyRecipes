@@ -1,13 +1,13 @@
 ﻿namespace MyRecipes.Services.Statistics
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using MyRecipes.Data;
     using MyRecipes.Models.Api.Statistics;
     using MyRecipes.Models.Home;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     public class StatisticsService : IStatisticsService
     {

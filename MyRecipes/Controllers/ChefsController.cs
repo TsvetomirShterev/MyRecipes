@@ -1,12 +1,13 @@
 ﻿namespace MyRecipes.Controllers
 {
+    using System.Linq;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using MyRecipes.Data;
     using MyRecipes.Data.Models;
     using MyRecipes.Infrastrucutre.Extentions;
     using MyRecipes.Models.Chefs;
-    using System.Linq;
 
     public class ChefsController : Controller
     {

@@ -1,6 +1,7 @@
 ﻿namespace MyRecipes.Data.Migrations
 {
     using System;
+
     using Microsoft.EntityFrameworkCore.Migrations;
 
     public partial class InitialCreate : Migration

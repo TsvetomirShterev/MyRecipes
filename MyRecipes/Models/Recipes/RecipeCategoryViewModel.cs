@@ -1,6 +1,7 @@
 ﻿namespace MyRecipes.Models.Recipes
 {
     using System.ComponentModel.DataAnnotations;
+
     using static Data.DataConstants.CategoryConstants;
     public class RecipeCategoryViewModel
     {

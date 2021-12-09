@@ -1,8 +1,6 @@
 ﻿namespace MyRecipes.Models.Home
 {
     using System;
-
-
     public class RecipeIndexViewModel
     {
         public int Id { get; set; }

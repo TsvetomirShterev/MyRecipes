@@ -1,13 +1,15 @@
 ﻿namespace MyRecipes.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using AutoMapper;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
     using MyRecipes.Models.Home;
     using MyRecipes.Services.Statistics;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+   
 
     public class HomeController : Controller
     {
@@ -32,7 +34,8 @@
             {
                 latestRecipes = this.statistics.Latest().ToList();
 
-                var cacheOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(15));
 
                 this.cache.Set(latestRecipesCacheKey, latestRecipes, cacheOptions);
             }

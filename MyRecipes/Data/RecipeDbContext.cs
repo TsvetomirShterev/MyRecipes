@@ -1,6 +1,5 @@
 ﻿namespace MyRecipes.Data
 {
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using MyRecipes.Data.Models;
