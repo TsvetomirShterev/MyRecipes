@@ -5,5 +5,7 @@
         public bool UserIsChef(string userId);
 
         public int GetIdByUser(string userId);
+
+        public void Create(string chefName, string userId);
     }
 }

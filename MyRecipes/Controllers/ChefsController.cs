@@ -8,13 +8,18 @@
     using MyRecipes.Data.Models;
     using MyRecipes.Infrastrucutre.Extentions;
     using MyRecipes.Models.Chefs;
+    using MyRecipes.Services.Chefs;
 
     public class ChefsController : Controller
     {
         private readonly RecipeDbContext data;
+        private readonly IChefService chefs;
 
-        public ChefsController(RecipeDbContext data)
-            => this.data = data;
+        public ChefsController(RecipeDbContext data, IChefService chefs)
+        {
+            this.data = data;
+            this.chefs = chefs;
+        }
 
         [Authorize]
         public IActionResult Become()
@@ -28,9 +33,7 @@
         {
             var userId = this.User.GetId();
 
-            var userIsAlreadyChef = this.data
-                .Chefs
-                .Any(c => c.UserId == userId);
+            var userIsAlreadyChef = this.chefs.UserIsChef(userId);
 
             if (userIsAlreadyChef)
             {
@@ -42,14 +45,7 @@
                 return View(chef);
             }
 
-            var validChef = new Chef
-            {
-                Name = chef.Name,
-                UserId = userId,
-            };
-
-            this.data.Chefs.Add(validChef);
-            this.data.SaveChanges();
+            this.chefs.Create(chef.Name, userId);
 
             return RedirectToAction("All", "Recipes");
         }

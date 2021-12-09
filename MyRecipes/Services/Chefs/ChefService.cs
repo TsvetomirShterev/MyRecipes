@@ -3,6 +3,7 @@
     using System.Linq;
 
     using MyRecipes.Data;
+    using MyRecipes.Data.Models;
 
     public class ChefService : IChefService
     {
@@ -22,5 +23,17 @@
                 .Where(c => c.UserId == userId)
                 .Select(c => c.Id)
                 .FirstOrDefault();
+
+        public void Create(string chefName, string userId)
+        {
+            var validChef = new Chef
+            {
+                Name = chefName,
+                UserId = userId,
+            };
+
+            this.data.Chefs.Add(validChef);
+            this.data.SaveChanges();
+        }
     }
 }
