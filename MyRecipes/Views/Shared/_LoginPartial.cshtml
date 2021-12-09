@@ -16,13 +16,13 @@
         @if (userIsChef && !userIsAdmin)
         {
             <li class="nav-item">
-                <a class="btn btn-success nav-link text-dark" asp-area="" asp-controller="Recipes" asp-action="MyRecipes">My Recipes</a>
+                <a class="btn btn-primary nav-link text-light" asp-area="" asp-controller="Recipes" asp-action="MyRecipes">My Recipes</a>
             </li>
         }
         else if(!userIsAdmin)
         {
             <li class="nav-item">
-                <a class="btn btn-success nav-link text-dark" asp-area="" asp-controller="Chefs" asp-action="Become">Become a Chef</a>
+                <a class="btn btn-primary nav-link text-light" asp-area="" asp-controller="Chefs" asp-action="Become">Become a Chef</a>
             </li>
         }
 
