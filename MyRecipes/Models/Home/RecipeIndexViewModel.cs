@@ -14,5 +14,7 @@
         public TimeSpan CookingTime { get; set; }
 
         public int PortionsCount { get; set; }
+
+        public string CategoryName { get; set; }
     }
 }

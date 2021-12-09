@@ -77,6 +77,12 @@ namespace MyRecipes
             .UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultAreaRoute();
+
+                endpoints.MapControllerRoute(
+                    name: "Recipe Details",
+                    pattern: "/recipes/details/{id}/{information}",
+                    defaults: new { controller = "Recipes", acttion = "Details"});
+
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapRazorPages();
             });

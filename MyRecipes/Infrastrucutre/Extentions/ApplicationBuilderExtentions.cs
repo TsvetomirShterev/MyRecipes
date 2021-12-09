@@ -47,7 +47,7 @@
 
             data.Categories.AddRange(new[]
            {
-                new Category {Name = "Breakfast "},
+                new Category {Name = "Breakfast"},
                 new Category {Name = "Lunch"},
                 new Category {Name = "Dinner"},
                 new Category {Name = "Appetizer"},

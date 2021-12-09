@@ -28,7 +28,7 @@ else
                     <img class="card-img-top" src="@recipe.ImageUrl" alt="@recipe.Title">
                     <div class="card-body text-center">
                         <h5 class="card-title">@recipe.Title</h5>
-                        <a asp-controller="Recipes" asp-action="Details" asp-route-id="@recipe.Id" class="btn btn-primary">View recipe</a>
+                        <a asp-controller="Recipes" asp-action="Details" asp-route-id="@recipe.Id" asp-route-information="@(recipe.Title + "-" + recipe.CategoryName)" B class="btn btn-primary">View recipe</a>
                     </div>
                 </div>
             </div>

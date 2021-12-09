@@ -143,6 +143,7 @@
             return RedirectToAction(nameof(All));
         }
 
+
         public IActionResult All([FromQuery] AllRecipesViewModel query)
         {
             var recipes = this.recipes.All(
@@ -166,6 +167,18 @@
             var myRecipes = this.recipes.ByUser(this.User.GetId());
 
             return View(myRecipes);
+        }
+
+        public IActionResult Details(int id, string information)
+        {
+            var recipe = this.recipes.Details(id);
+
+            if (information != recipe.Title + "-" + recipe.CategoryName)
+            {
+                return BadRequest();
+            }
+
+            return View(recipe);
         }
     }
 }
