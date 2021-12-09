@@ -12,12 +12,10 @@
 
     public class ChefsController : Controller
     {
-        private readonly RecipeDbContext data;
         private readonly IChefService chefs;
 
-        public ChefsController(RecipeDbContext data, IChefService chefs)
+        public ChefsController(IChefService chefs)
         {
-            this.data = data;
             this.chefs = chefs;
         }
 
