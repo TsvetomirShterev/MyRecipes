@@ -18,12 +18,13 @@
               int chefId);
 
         RecipeQueryServiceModel All(
-           string category,
-           string searchTerm,
-           int currentPage,
-           int recipesPerPage);
+           string category = null,
+           string searchTerm = null,
+           int currentPage = 1,
+           int recipesPerPage = int.MaxValue,
+           bool publicOnly = true);
 
-        bool EditRecipe(
+        int EditRecipe(
             int id,
             string title,
             string ingredients,
@@ -32,7 +33,8 @@
             int portionsCount,
             int prepTime,
             int cookingTime,
-            int categoryId);
+            int categoryId, 
+            bool isPublic);
 
         IEnumerable<RecipeCategoryViewModel> GetRecipeCategories();
 
@@ -46,6 +48,6 @@
 
         bool CategoryExists(int categoryId);
 
-        
+        void ChangeVisibility(int idrecipeId);
     }
 }

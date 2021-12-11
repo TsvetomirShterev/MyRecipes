@@ -5,9 +5,10 @@
     using System.ComponentModel.DataAnnotations;
 
     using MyRecipes.Data.Models;
+    using MyRecipes.Services.Recipes;
 
     using static Data.DataConstants.RecipeConstants;
-    public class RecipeFormModel
+    public class RecipeFormModel : IRecipeModel
     {
 
         [Required]
@@ -39,7 +40,8 @@
         [Display(Name = nameof(Category))]
         public int CategoryId { get; init; }
 
-    
+        public string CategoryName { get; set; }
+
         public IEnumerable<RecipeCategoryViewModel> Categories { get; set; }
 
     }

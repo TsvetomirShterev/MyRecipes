@@ -22,12 +22,15 @@
         }
 
         public RecipeQueryServiceModel All(
-            string category,
-            string searchTerm,
-            int currentPage,
-            int recipesPerPage)
+            string category = null,
+           string searchTerm = null,
+           int currentPage = 1,
+           int recipesPerPage = int.MaxValue,
+           bool publicOnly = true)
         {
-            var recipesQuery = this.data.Recipes.AsQueryable();
+            var recipesQuery = this.data
+                .Recipes
+                .Where(r => !publicOnly || r.IsPublic);
 
             if (!string.IsNullOrWhiteSpace(category))
             {
@@ -44,10 +47,22 @@
 
             var totalRecipes = recipesQuery.Count();
 
-            var recipes = this.GetRecipes(recipesQuery
+            var recipes = recipesQuery
                 .OrderByDescending(r => r.Id)
+                .ProjectTo<RecipeServiceModel>(this.mapper.ConfigurationProvider)
+                //.Select(r => new RecipeServiceModel
+                //{
+                //    Id = r.Id,
+                //    Title = r.Title,
+                //    ImageUrl = r.ImageUrl,
+                //    PrepTime = r.PrepTime,
+                //    CookingTime = r.CookingTime,
+                //    PortionsCount = r.PortionsCount,
+                //    CategoryName = r.Category.Name,
+                //})
                 .Skip((currentPage - 1) * recipesPerPage)
-                .Take(recipesPerPage));
+                .Take(recipesPerPage)
+                .ToList();
 
 
             return new RecipeQueryServiceModel
@@ -67,9 +82,20 @@
                  .ToArray();
 
         public IEnumerable<RecipeServiceModel> ByUser(string userId)
-            => this
-            .GetRecipes(this.data.Recipes
-                .Where(c => c.Chef.UserId == userId));
+            => this.data.Recipes
+                 .Where(c => c.Chef.UserId == userId)
+                 .ProjectTo<RecipeServiceModel>(this.mapper.ConfigurationProvider)
+                 //.Select(r => new RecipeServiceModel
+                 //{
+                 //    Id = r.Id,
+                 //    Title = r.Title,
+                 //    ImageUrl = r.ImageUrl,
+                 //    PrepTime = r.PrepTime,
+                 //    CookingTime = r.CookingTime,
+                 //    PortionsCount = r.PortionsCount,
+                 //    CategoryName = r.Category.Name,
+                 //})
+                 .ToList();
 
 
         public RecipesInstructionsServiceModel Details(int id)
@@ -84,7 +110,16 @@
             .Categories
             .Any(c => c.Id == categoryId);
 
-        public int CreateRecipe(string title, string ingredients, string instructions, string imageUrl, int portionsCount, int prepTime, int cookingTime, int categoryId, int chefId)
+        public int CreateRecipe(
+            string title,
+            string ingredients,
+            string instructions,
+            string imageUrl,
+            int portionsCount,
+            int prepTime,
+            int cookingTime,
+            int categoryId,
+            int chefId)
         {
             var validRecipe = new Recipe
             {
@@ -97,6 +132,7 @@
                 CookingTime = TimeSpan.FromMinutes(cookingTime),
                 CategoryId = categoryId,
                 ChefId = chefId,
+                IsPublic = false,
             };
 
             this.data.Recipes.Add(validRecipe);
@@ -105,13 +141,23 @@
             return validRecipe.Id;
         }
 
-        public bool EditRecipe(int id, string title, string ingredients, string instructions, string imageUrl, int portionsCount, int prepTime, int cookingTime, int categoryId)
+        public int EditRecipe(
+            int id,
+            string title,
+            string ingredients,
+            string instructions,
+            string imageUrl,
+            int portionsCount,
+            int prepTime,
+            int cookingTime,
+            int categoryId,
+            bool isPublic)
         {
             var recipeData = data.Recipes.Find(id);
 
             if (recipeData == null)
             {
-                return false;
+                return 0;
             }
 
             recipeData.Title = title;
@@ -122,10 +168,11 @@
             recipeData.PrepTime = TimeSpan.FromMinutes(prepTime);
             recipeData.CookingTime = TimeSpan.FromMinutes(cookingTime);
             recipeData.CategoryId = categoryId;
+            recipeData.IsPublic = isPublic;
 
             this.data.SaveChanges();
 
-            return true;
+            return recipeData.Id;
         }
 
         public bool IsByChef(int recipeId, int chefId)
@@ -134,29 +181,37 @@
             .Any(r => r.Id == recipeId && r.ChefId == chefId);
 
         public IEnumerable<RecipeCategoryViewModel> GetRecipeCategories()
-      => this.data
-      .Categories
-      .Select(c => new RecipeCategoryViewModel
-      {
-          Id = c.Id,
-          Name = c.Name,
-      })
-      .ToArray();
+           => this.data
+           .Categories
+           .ProjectTo<RecipeCategoryViewModel>(this.mapper.ConfigurationProvider)
+           //.Select(c => new RecipeCategoryViewModel
+           //{
+           //    Id = c.Id,
+           //    Name = c.Name,
+           //})
+           .ToArray();
 
-        private IEnumerable<RecipeServiceModel> GetRecipes(IQueryable<Recipe> recipeQuery)
-          => recipeQuery
-            .Select(r => new RecipeServiceModel
-          {
-              Id = r.Id,
-              Title = r.Title,
-              ImageUrl = r.ImageUrl,
-              PrepTime = r.PrepTime,
-              CookingTime = r.CookingTime,
-              PortionsCount = r.PortionsCount,
-              CategoryName = r.Category.Name,
-          })
-            .ToList();
+        public void ChangeVisibility(int recipeId)
+        {
+            var recipe = this.data.Recipes.Find(recipeId);
 
-       
+            recipe.IsPublic = !recipe.IsPublic;
+
+            this.data.SaveChanges();
+        }
+
+        //private IEnumerable<RecipeServiceModel> GetRecipes(IQueryable<Recipe> recipeQuery)
+        //  => recipeQuery
+        //    .Select(r => new RecipeServiceModel
+        //    {
+        //        Id = r.Id,
+        //        Title = r.Title,
+        //        ImageUrl = r.ImageUrl,
+        //        PrepTime = r.PrepTime,
+        //        CookingTime = r.CookingTime,
+        //        PortionsCount = r.PortionsCount,
+        //        CategoryName = r.Category.Name,
+        //    })
+        //    .ToList();
     }
 }

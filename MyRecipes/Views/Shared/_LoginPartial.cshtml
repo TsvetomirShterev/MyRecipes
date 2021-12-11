@@ -19,10 +19,16 @@
                 <a class="btn btn-primary nav-link text-light" asp-area="" asp-controller="Recipes" asp-action="MyRecipes">My Recipes</a>
             </li>
         }
-        else if(!userIsAdmin)
+        else if (!userIsAdmin)
         {
             <li class="nav-item">
                 <a class="btn btn-primary nav-link text-light" asp-area="" asp-controller="Chefs" asp-action="Become">Become a Chef</a>
+            </li>
+        }
+        else if (userIsAdmin)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Admin" asp-controller="Recipes" asp-action="All">Administration</a>
             </li>
         }
 

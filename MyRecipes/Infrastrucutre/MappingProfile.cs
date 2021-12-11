@@ -23,6 +23,11 @@
             this.CreateMap<RecipesInstructionsServiceModel, RecipeFormModel>()
                 .ForMember(r => r.CookingTime, f => f.Ignore())
                 .ForMember(x => x.PrepTime, y => y.Ignore());
+
+            this.CreateMap<Category, RecipeCategoryViewModel>();
+
+            this.CreateMap<Recipe, RecipeServiceModel>()
+                .ForMember(r => r.CategoryName, cfg => cfg.MapFrom(r => r.Category.Name));
         }
     }
 }

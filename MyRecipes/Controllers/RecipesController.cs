@@ -7,7 +7,7 @@
     using MyRecipes.Models.Recipes;
     using MyRecipes.Services.Chefs;
     using MyRecipes.Services.Recipes;
-
+    using System.Linq;
 
     public class RecipesController : Controller
     {
@@ -60,18 +60,24 @@
                 return View(recipe);
             }
 
-            this.recipes.CreateRecipe(
-                recipe.Title,
-                recipe.Ingredients,
-                recipe.Instructions,
-                recipe.ImageUrl,
-                recipe.PortionsCount,
-                recipe.PrepTime,
-                recipe.CookingTime,
-                recipe.CategoryId,
-                chefId);
+            var recipeId = this.recipes.CreateRecipe(
+                 recipe.Title,
+                 recipe.Ingredients,
+                 recipe.Instructions,
+                 recipe.ImageUrl,
+                 recipe.PortionsCount,
+                 recipe.PrepTime,
+                 recipe.CookingTime,
+                 recipe.CategoryId,
+                 chefId);
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details),
+                new
+                {
+                    id = recipeId,
+                    information = recipe.Title + "-" + this.recipes.GetRecipeCategories()
+                    .FirstOrDefault(r => r.Id == recipe.CategoryId).Name
+                });
         }
 
         [Authorize]
@@ -128,19 +134,25 @@
                 return BadRequest();
             }
 
-            this.recipes.EditRecipe(
-                 id,
-                 recipe.Title,
-                 recipe.Ingredients,
-                 recipe.Instructions,
-                 recipe.ImageUrl,
-                 recipe.PortionsCount,
-                 recipe.PrepTime,
-                 recipe.CookingTime,
-                 recipe.CategoryId
-                 );
+            var recipeId = this.recipes.EditRecipe(
+                    id,
+                    recipe.Title,
+                    recipe.Ingredients,
+                    recipe.Instructions,
+                    recipe.ImageUrl,
+                    recipe.PortionsCount,
+                    recipe.PrepTime,
+                    recipe.CookingTime,
+                    recipe.CategoryId,
+                    this.User.IsAdmin());
 
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details),
+                new
+                {
+                    id = recipeId,
+                    information = recipe.Title + "-" + this.recipes.GetRecipeCategories()
+                    .FirstOrDefault(r => r.Id == recipe.CategoryId).Name
+                });
         }
 
 

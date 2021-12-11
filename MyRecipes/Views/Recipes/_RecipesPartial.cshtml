@@ -13,7 +13,7 @@
                 <div class="card-body text-center">
                     <h5 class="card-title">@recipe.Title</h5>
                     <h6 class="card-title">Category: @recipe.CategoryName</h6>
-                    <a asp-controller="Recipes" asp-action="Details" asp-route-id="@recipe.Id" asp-route-information="@(recipe.Title + "-" + recipe.CategoryName)" class="btn btn-primary">View recipe</a>
+                    <a asp-controller="Recipes" asp-action="Details" asp-route-id="@recipe.Id" asp-route-information="@recipe.ToFriendlyUrl()" class="btn btn-primary">View recipe</a>
                     @if (ViewBag.AllowRecipeEdit == true || User.IsAdmin())
                     {
                         <a asp-controller="Recipes" asp-action="Edit" asp-route-id="@recipe.Id" class="btn btn-warning">Edit</a>

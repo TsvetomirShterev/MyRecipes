@@ -9,7 +9,7 @@
     using Microsoft.Extensions.Caching.Memory;
     using MyRecipes.Models.Home;
     using MyRecipes.Services.Statistics;
-   
+
 
     public class HomeController : Controller
     {

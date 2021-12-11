@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class RecipeServiceModel 
+    public class RecipeServiceModel : IRecipeModel
     {
         public int Id { get; set; }
 
@@ -17,5 +17,7 @@
         public int PortionsCount { get; set; }
 
         public string CategoryName { get; set; }
+
+        public bool IsPublic { get; init; }
     }
 }

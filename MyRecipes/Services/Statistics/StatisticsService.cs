@@ -22,7 +22,7 @@
 
         public StatisticsResponseModel GetStatistics()
         {
-            var totalRecipes = this.data.Recipes.Count();
+            var totalRecipes = this.data.Recipes.Count(r => r.IsPublic);
             var totalChefs = this.data.Chefs.Count();
             var totalUsers = this.data.Users.Count();
 
@@ -37,6 +37,7 @@
         public IEnumerable<RecipeIndexViewModel> Latest()
          => this.data
               .Recipes
+              .Where(r => r.IsPublic)
               .OrderByDescending(r => r.Id)
               .ProjectTo<RecipeIndexViewModel>(this.mapper.ConfigurationProvider)
               .Take(3)
