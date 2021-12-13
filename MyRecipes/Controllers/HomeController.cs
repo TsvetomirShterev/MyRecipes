@@ -10,6 +10,7 @@
     using MyRecipes.Models.Home;
     using MyRecipes.Services.Statistics;
 
+    using static WebConstants.Cache;
 
     public class HomeController : Controller
     {
@@ -26,9 +27,7 @@
 
         public IActionResult Index()
         {
-            const string latestRecipesCacheKey = "LatestRecipesCacheKey";
-
-            var latestRecipes = this.cache.Get<List<RecipeIndexViewModel>>(latestRecipesCacheKey);
+            var latestRecipes = this.cache.Get<List<RecipeIndexViewModel>>(LatestRecipesCacheKey);
 
             if (latestRecipes == null)
             {
@@ -37,7 +36,7 @@
                 var cacheOptions = new MemoryCacheEntryOptions()
                     .SetSlidingExpiration(TimeSpan.FromMinutes(15));
 
-                this.cache.Set(latestRecipesCacheKey, latestRecipes, cacheOptions);
+                this.cache.Set(LatestRecipesCacheKey, latestRecipes, cacheOptions);
             }
 
 

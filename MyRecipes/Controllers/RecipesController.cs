@@ -146,6 +146,11 @@
                     recipe.CategoryId,
                     this.User.IsAdmin());
 
+            if (recipeId == 0)
+            {
+                return BadRequest();
+            }
+
             return RedirectToAction(nameof(Details),
                 new
                 {
