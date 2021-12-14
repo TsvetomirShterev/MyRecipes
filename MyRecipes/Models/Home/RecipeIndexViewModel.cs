@@ -1,7 +1,8 @@
 ﻿namespace MyRecipes.Models.Home
 {
-    using MyRecipes.Services.Recipes;
     using System;
+
+    using MyRecipes.Services.Recipes;
     public class RecipeIndexViewModel : IRecipeModel
     {
         public int Id { get; set; }

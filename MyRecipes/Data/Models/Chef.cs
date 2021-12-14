@@ -3,8 +3,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Microsoft.AspNetCore.Identity;
-
     using static DataConstants.ChefConstants;
     public class Chef
     {

@@ -1,5 +1,7 @@
 ﻿namespace MyRecipes.Controllers
 {
+    using System.Linq;
+
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -7,7 +9,6 @@
     using MyRecipes.Models.Recipes;
     using MyRecipes.Services.Chefs;
     using MyRecipes.Services.Recipes;
-    using System.Linq;
 
     public class RecipesController : Controller
     {
