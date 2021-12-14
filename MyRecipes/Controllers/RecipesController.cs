@@ -198,5 +198,11 @@
 
             return View(recipe);
         }
+
+        [Authorize]
+        public IActionResult Delete()
+        {
+            return View();
+        }
     }
 }
