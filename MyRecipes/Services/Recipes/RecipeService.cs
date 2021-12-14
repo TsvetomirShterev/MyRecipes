@@ -50,16 +50,6 @@
             var recipes = recipesQuery
                 .OrderByDescending(r => r.Id)
                 .ProjectTo<RecipeServiceModel>(this.mapper.ConfigurationProvider)
-                //.Select(r => new RecipeServiceModel
-                //{
-                //    Id = r.Id,
-                //    Title = r.Title,
-                //    ImageUrl = r.ImageUrl,
-                //    PrepTime = r.PrepTime,
-                //    CookingTime = r.CookingTime,
-                //    PortionsCount = r.PortionsCount,
-                //    CategoryName = r.Category.Name,
-                //})
                 .Skip((currentPage - 1) * recipesPerPage)
                 .Take(recipesPerPage)
                 .ToList();
@@ -85,16 +75,6 @@
             => this.data.Recipes
                  .Where(c => c.Chef.UserId == userId)
                  .ProjectTo<RecipeServiceModel>(this.mapper.ConfigurationProvider)
-                 //.Select(r => new RecipeServiceModel
-                 //{
-                 //    Id = r.Id,
-                 //    Title = r.Title,
-                 //    ImageUrl = r.ImageUrl,
-                 //    PrepTime = r.PrepTime,
-                 //    CookingTime = r.CookingTime,
-                 //    PortionsCount = r.PortionsCount,
-                 //    CategoryName = r.Category.Name,
-                 //})
                  .ToList();
 
 
@@ -184,11 +164,6 @@
            => this.data
            .Categories
            .ProjectTo<RecipeCategoryViewModel>(this.mapper.ConfigurationProvider)
-           //.Select(c => new RecipeCategoryViewModel
-           //{
-           //    Id = c.Id,
-           //    Name = c.Name,
-           //})
            .ToArray();
 
         public void ChangeVisibility(int recipeId)
@@ -199,19 +174,5 @@
 
             this.data.SaveChanges();
         }
-
-        //private IEnumerable<RecipeServiceModel> GetRecipes(IQueryable<Recipe> recipeQuery)
-        //  => recipeQuery
-        //    .Select(r => new RecipeServiceModel
-        //    {
-        //        Id = r.Id,
-        //        Title = r.Title,
-        //        ImageUrl = r.ImageUrl,
-        //        PrepTime = r.PrepTime,
-        //        CookingTime = r.CookingTime,
-        //        PortionsCount = r.PortionsCount,
-        //        CategoryName = r.Category.Name,
-        //    })
-        //    .ToList();
     }
 }
