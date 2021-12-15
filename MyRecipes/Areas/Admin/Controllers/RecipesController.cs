@@ -23,5 +23,12 @@
 
             return RedirectToAction(nameof(All));
         }
+
+        public IActionResult Delete(int id)
+        {
+            this.recipes.Delete(id);
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }
