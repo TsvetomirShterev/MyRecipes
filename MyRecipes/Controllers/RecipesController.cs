@@ -5,6 +5,8 @@
     using AutoMapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using MyRecipes.Data;
+    using MyRecipes.Data.Models;
     using MyRecipes.Infrastrucutre.Extentions;
     using MyRecipes.Models.Recipes;
     using MyRecipes.Services.Chefs;
@@ -16,12 +18,14 @@
         private readonly IRecipeService recipes;
         private readonly IChefService chefs;
         private readonly IMapper mapper;
+        private readonly RecipeDbContext data;
 
-        public RecipesController(IRecipeService recipes, IChefService chefs, IMapper mapper)
+        public RecipesController(IRecipeService recipes, IChefService chefs, IMapper mapper, RecipeDbContext data)
         {
             this.recipes = recipes;
             this.chefs = chefs;
             this.mapper = mapper;
+            this.data = data;
         }
 
         [Authorize]
@@ -199,10 +203,13 @@
             return View(recipe);
         }
 
+
         [Authorize]
-        public IActionResult Delete()
+        public IActionResult Delete(int id)
         {
-            return View();
+            this.recipes.Delete(id);
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

@@ -28,6 +28,7 @@
 
             this.CreateMap<Recipe, RecipeServiceModel>()
                 .ForMember(r => r.CategoryName, cfg => cfg.MapFrom(r => r.Category.Name));
+
         }
     }
 }

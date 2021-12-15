@@ -34,7 +34,7 @@
                     <a asp-area="" asp-controller="Recipes" asp-action="Details" asp-route-id="@recipe.Id" asp-route-information="@recipe.ToFriendlyUrl()" class="btn btn-primary">View</a>
                     <a asp-area="" asp-controller="Recipes" asp-action="Edit" asp-route-id="@recipe.Id" class="btn btn-warning">Edit</a>
                     <a asp-area="Admin" asp-controller="Recipes" asp-action="ChangeVisibility" asp-route-id="@recipe.Id" class="btn btn-info">@(recipe.IsPublic ? "Hide" : "Show")</a>
-                    <a asp-area="" asp-controller="Recipes" asp-action="Delete" asp-route-id="@recipe.Id" class="btn btn-danger">Delete</a>
+                    <a asp-area="Admin" asp-controller="Recipes" asp-action="Delete" asp-route-id="@recipe.Id" class="btn btn-danger">Delete</a>
 
                 </td>
             </tr>

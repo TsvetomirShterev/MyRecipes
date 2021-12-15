@@ -1,7 +1,8 @@
 ﻿namespace MyRecipes.Services.Recipes
 {
+    using System;
     using System.Collections.Generic;
-
+    using MyRecipes.Data.Models;
     using MyRecipes.Models.Recipes;
 
     public interface IRecipeService
@@ -33,7 +34,7 @@
             int portionsCount,
             int prepTime,
             int cookingTime,
-            int categoryId, 
+            int categoryId,
             bool isPublic);
 
         IEnumerable<RecipeCategoryViewModel> GetRecipeCategories();
@@ -49,5 +50,7 @@
         bool CategoryExists(int categoryId);
 
         void ChangeVisibility(int idrecipeId);
+
+        void Delete(int recipeId);
     }
 }

@@ -174,5 +174,13 @@
 
             this.data.SaveChanges();
         }
+
+        public void Delete(int recipeId)
+        {
+           var recipeToDelete = this.data.Recipes.FirstOrDefault(r => r.Id == recipeId);
+
+            this.data.Recipes.Remove(recipeToDelete);
+            this.data.SaveChanges();
+        }
     }
 }
