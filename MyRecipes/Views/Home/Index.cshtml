@@ -12,13 +12,16 @@
         <p class="lead">There are no recepies on the website currently! You can add one yourself.</p>
         <hr class="my-4">
         <p class="lead">
-            <a asp-controller="Recipes" asp-action="Add" class="btn btn-primary btn-lg" role="button">Add recipe</a>
+            @if (!User.IsAdmin())
+            {
+                <a asp-controller="Recipes" asp-action="Add" class="btn btn-primary btn-lg" role="button">Add recipe</a>
+            }
         </p>
     </div>
 }
 else
 {
-    <h1>Last three added recipes:</h1>
+    <h1>Last added recipes:</h1>
     <br>
     <div class="row">
         @foreach (var recipe in Model.Recipes)

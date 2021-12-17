@@ -19,5 +19,7 @@
         public string CategoryName { get; set; }
 
         public bool IsPublic { get; init; }
+
+        public bool IsDeleted { get; init; }
     }
 }

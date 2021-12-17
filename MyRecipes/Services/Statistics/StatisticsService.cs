@@ -37,7 +37,7 @@
         public IEnumerable<RecipeIndexViewModel> Latest()
          => this.data
               .Recipes
-              .Where(r => r.IsPublic)
+              .Where(r => r.IsPublic && r.IsDeleted == false)
               .OrderByDescending(r => r.Id)
               .ProjectTo<RecipeIndexViewModel>(this.mapper.ConfigurationProvider)
               .Take(3)

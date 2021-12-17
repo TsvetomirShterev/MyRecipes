@@ -30,7 +30,7 @@
         {
             var recipesQuery = this.data
                 .Recipes
-                .Where(r => !publicOnly || r.IsPublic);
+                .Where(r => !publicOnly || r.IsPublic && r.IsDeleted == false);
 
             if (!string.IsNullOrWhiteSpace(category))
             {
@@ -177,9 +177,7 @@
 
         public void Delete(int recipeId)
         {
-           var recipeToDelete = this.data.Recipes.FirstOrDefault(r => r.Id == recipeId);
-
-            this.data.Recipes.Remove(recipeToDelete);
+            this.data.Recipes.Find(recipeId).IsDeleted = true;
             this.data.SaveChanges();
         }
     }

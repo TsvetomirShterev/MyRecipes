@@ -20,7 +20,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var recipe in Model)
+        @foreach (var recipe in Model.Where(r => r.IsDeleted == false))
         {
             <tr>
                 <td scope="col">@recipe.Id</td>

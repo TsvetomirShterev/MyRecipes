@@ -5,7 +5,9 @@
 
 
 <div class="row">
-    @foreach (var recipe in Model.OrderByDescending(r => r.Id))
+    @foreach (var recipe in Model
+        .Where(r=>r.IsDeleted == false)
+        .OrderByDescending(r => r.Id))
     {
         <div class="col mb-4">
             <div class="card" style="width: 20rem;">
